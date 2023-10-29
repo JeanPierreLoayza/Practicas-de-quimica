@@ -1,0 +1,214 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+     
+
+!pip install drawdata
+     
+Requirement already satisfied: drawdata in /usr/local/lib/python3.10/dist-packages (0.2.0)
+Requirement already satisfied: jupyter>=1.0.0 in /usr/local/lib/python3.10/dist-packages (from drawdata) (1.0.0)
+Requirement already satisfied: ipython>=7.16.1 in /usr/local/lib/python3.10/dist-packages (from drawdata) (7.34.0)
+Requirement already satisfied: setuptools>=18.5 in /usr/local/lib/python3.10/dist-packages (from ipython>=7.16.1->drawdata) (67.7.2)
+Requirement already satisfied: jedi>=0.16 in /usr/local/lib/python3.10/dist-packages (from ipython>=7.16.1->drawdata) (0.19.1)
+Requirement already satisfied: decorator in /usr/local/lib/python3.10/dist-packages (from ipython>=7.16.1->drawdata) (4.4.2)
+Requirement already satisfied: pickleshare in /usr/local/lib/python3.10/dist-packages (from ipython>=7.16.1->drawdata) (0.7.5)
+Requirement already satisfied: traitlets>=4.2 in /usr/local/lib/python3.10/dist-packages (from ipython>=7.16.1->drawdata) (5.7.1)
+Requirement already satisfied: prompt-toolkit!=3.0.0,!=3.0.1,<3.1.0,>=2.0.0 in /usr/local/lib/python3.10/dist-packages (from ipython>=7.16.1->drawdata) (3.0.39)
+Requirement already satisfied: pygments in /usr/local/lib/python3.10/dist-packages (from ipython>=7.16.1->drawdata) (2.16.1)
+Requirement already satisfied: backcall in /usr/local/lib/python3.10/dist-packages (from ipython>=7.16.1->drawdata) (0.2.0)
+Requirement already satisfied: matplotlib-inline in /usr/local/lib/python3.10/dist-packages (from ipython>=7.16.1->drawdata) (0.1.6)
+Requirement already satisfied: pexpect>4.3 in /usr/local/lib/python3.10/dist-packages (from ipython>=7.16.1->drawdata) (4.8.0)
+Requirement already satisfied: notebook in /usr/local/lib/python3.10/dist-packages (from jupyter>=1.0.0->drawdata) (6.5.5)
+Requirement already satisfied: qtconsole in /usr/local/lib/python3.10/dist-packages (from jupyter>=1.0.0->drawdata) (5.4.4)
+Requirement already satisfied: jupyter-console in /usr/local/lib/python3.10/dist-packages (from jupyter>=1.0.0->drawdata) (6.1.0)
+Requirement already satisfied: nbconvert in /usr/local/lib/python3.10/dist-packages (from jupyter>=1.0.0->drawdata) (6.5.4)
+Requirement already satisfied: ipykernel in /usr/local/lib/python3.10/dist-packages (from jupyter>=1.0.0->drawdata) (5.5.6)
+Requirement already satisfied: ipywidgets in /usr/local/lib/python3.10/dist-packages (from jupyter>=1.0.0->drawdata) (7.7.1)
+Requirement already satisfied: parso<0.9.0,>=0.8.3 in /usr/local/lib/python3.10/dist-packages (from jedi>=0.16->ipython>=7.16.1->drawdata) (0.8.3)
+Requirement already satisfied: ptyprocess>=0.5 in /usr/local/lib/python3.10/dist-packages (from pexpect>4.3->ipython>=7.16.1->drawdata) (0.7.0)
+Requirement already satisfied: wcwidth in /usr/local/lib/python3.10/dist-packages (from prompt-toolkit!=3.0.0,!=3.0.1,<3.1.0,>=2.0.0->ipython>=7.16.1->drawdata) (0.2.8)
+Requirement already satisfied: ipython-genutils in /usr/local/lib/python3.10/dist-packages (from ipykernel->jupyter>=1.0.0->drawdata) (0.2.0)
+Requirement already satisfied: jupyter-client in /usr/local/lib/python3.10/dist-packages (from ipykernel->jupyter>=1.0.0->drawdata) (6.1.12)
+Requirement already satisfied: tornado>=4.2 in /usr/local/lib/python3.10/dist-packages (from ipykernel->jupyter>=1.0.0->drawdata) (6.3.2)
+Requirement already satisfied: widgetsnbextension~=3.6.0 in /usr/local/lib/python3.10/dist-packages (from ipywidgets->jupyter>=1.0.0->drawdata) (3.6.6)
+Requirement already satisfied: jupyterlab-widgets>=1.0.0 in /usr/local/lib/python3.10/dist-packages (from ipywidgets->jupyter>=1.0.0->drawdata) (3.0.9)
+Requirement already satisfied: lxml in /usr/local/lib/python3.10/dist-packages (from nbconvert->jupyter>=1.0.0->drawdata) (4.9.3)
+Requirement already satisfied: beautifulsoup4 in /usr/local/lib/python3.10/dist-packages (from nbconvert->jupyter>=1.0.0->drawdata) (4.11.2)
+Requirement already satisfied: bleach in /usr/local/lib/python3.10/dist-packages (from nbconvert->jupyter>=1.0.0->drawdata) (6.1.0)
+Requirement already satisfied: defusedxml in /usr/local/lib/python3.10/dist-packages (from nbconvert->jupyter>=1.0.0->drawdata) (0.7.1)
+Requirement already satisfied: entrypoints>=0.2.2 in /usr/local/lib/python3.10/dist-packages (from nbconvert->jupyter>=1.0.0->drawdata) (0.4)
+Requirement already satisfied: jinja2>=3.0 in /usr/local/lib/python3.10/dist-packages (from nbconvert->jupyter>=1.0.0->drawdata) (3.1.2)
+Requirement already satisfied: jupyter-core>=4.7 in /usr/local/lib/python3.10/dist-packages (from nbconvert->jupyter>=1.0.0->drawdata) (5.4.0)
+Requirement already satisfied: jupyterlab-pygments in /usr/local/lib/python3.10/dist-packages (from nbconvert->jupyter>=1.0.0->drawdata) (0.2.2)
+Requirement already satisfied: MarkupSafe>=2.0 in /usr/local/lib/python3.10/dist-packages (from nbconvert->jupyter>=1.0.0->drawdata) (2.1.3)
+Requirement already satisfied: mistune<2,>=0.8.1 in /usr/local/lib/python3.10/dist-packages (from nbconvert->jupyter>=1.0.0->drawdata) (0.8.4)
+Requirement already satisfied: nbclient>=0.5.0 in /usr/local/lib/python3.10/dist-packages (from nbconvert->jupyter>=1.0.0->drawdata) (0.8.0)
+Requirement already satisfied: nbformat>=5.1 in /usr/local/lib/python3.10/dist-packages (from nbconvert->jupyter>=1.0.0->drawdata) (5.9.2)
+Requirement already satisfied: packaging in /usr/local/lib/python3.10/dist-packages (from nbconvert->jupyter>=1.0.0->drawdata) (23.2)
+Requirement already satisfied: pandocfilters>=1.4.1 in /usr/local/lib/python3.10/dist-packages (from nbconvert->jupyter>=1.0.0->drawdata) (1.5.0)
+Requirement already satisfied: tinycss2 in /usr/local/lib/python3.10/dist-packages (from nbconvert->jupyter>=1.0.0->drawdata) (1.2.1)
+Requirement already satisfied: pyzmq<25,>=17 in /usr/local/lib/python3.10/dist-packages (from notebook->jupyter>=1.0.0->drawdata) (23.2.1)
+Requirement already satisfied: argon2-cffi in /usr/local/lib/python3.10/dist-packages (from notebook->jupyter>=1.0.0->drawdata) (23.1.0)
+Requirement already satisfied: nest-asyncio>=1.5 in /usr/local/lib/python3.10/dist-packages (from notebook->jupyter>=1.0.0->drawdata) (1.5.8)
+Requirement already satisfied: Send2Trash>=1.8.0 in /usr/local/lib/python3.10/dist-packages (from notebook->jupyter>=1.0.0->drawdata) (1.8.2)
+Requirement already satisfied: terminado>=0.8.3 in /usr/local/lib/python3.10/dist-packages (from notebook->jupyter>=1.0.0->drawdata) (0.17.1)
+Requirement already satisfied: prometheus-client in /usr/local/lib/python3.10/dist-packages (from notebook->jupyter>=1.0.0->drawdata) (0.17.1)
+Requirement already satisfied: nbclassic>=0.4.7 in /usr/local/lib/python3.10/dist-packages (from notebook->jupyter>=1.0.0->drawdata) (1.0.0)
+Requirement already satisfied: qtpy>=2.4.0 in /usr/local/lib/python3.10/dist-packages (from qtconsole->jupyter>=1.0.0->drawdata) (2.4.1)
+Requirement already satisfied: python-dateutil>=2.1 in /usr/local/lib/python3.10/dist-packages (from jupyter-client->ipykernel->jupyter>=1.0.0->drawdata) (2.8.2)
+Requirement already satisfied: platformdirs>=2.5 in /usr/local/lib/python3.10/dist-packages (from jupyter-core>=4.7->nbconvert->jupyter>=1.0.0->drawdata) (3.11.0)
+Requirement already satisfied: jupyter-server>=1.8 in /usr/local/lib/python3.10/dist-packages (from nbclassic>=0.4.7->notebook->jupyter>=1.0.0->drawdata) (1.24.0)
+Requirement already satisfied: notebook-shim>=0.2.3 in /usr/local/lib/python3.10/dist-packages (from nbclassic>=0.4.7->notebook->jupyter>=1.0.0->drawdata) (0.2.3)
+Requirement already satisfied: fastjsonschema in /usr/local/lib/python3.10/dist-packages (from nbformat>=5.1->nbconvert->jupyter>=1.0.0->drawdata) (2.18.1)
+Requirement already satisfied: jsonschema>=2.6 in /usr/local/lib/python3.10/dist-packages (from nbformat>=5.1->nbconvert->jupyter>=1.0.0->drawdata) (4.19.1)
+Requirement already satisfied: argon2-cffi-bindings in /usr/local/lib/python3.10/dist-packages (from argon2-cffi->notebook->jupyter>=1.0.0->drawdata) (21.2.0)
+Requirement already satisfied: soupsieve>1.2 in /usr/local/lib/python3.10/dist-packages (from beautifulsoup4->nbconvert->jupyter>=1.0.0->drawdata) (2.5)
+Requirement already satisfied: six>=1.9.0 in /usr/local/lib/python3.10/dist-packages (from bleach->nbconvert->jupyter>=1.0.0->drawdata) (1.16.0)
+Requirement already satisfied: webencodings in /usr/local/lib/python3.10/dist-packages (from bleach->nbconvert->jupyter>=1.0.0->drawdata) (0.5.1)
+Requirement already satisfied: attrs>=22.2.0 in /usr/local/lib/python3.10/dist-packages (from jsonschema>=2.6->nbformat>=5.1->nbconvert->jupyter>=1.0.0->drawdata) (23.1.0)
+Requirement already satisfied: jsonschema-specifications>=2023.03.6 in /usr/local/lib/python3.10/dist-packages (from jsonschema>=2.6->nbformat>=5.1->nbconvert->jupyter>=1.0.0->drawdata) (2023.7.1)
+Requirement already satisfied: referencing>=0.28.4 in /usr/local/lib/python3.10/dist-packages (from jsonschema>=2.6->nbformat>=5.1->nbconvert->jupyter>=1.0.0->drawdata) (0.30.2)
+Requirement already satisfied: rpds-py>=0.7.1 in /usr/local/lib/python3.10/dist-packages (from jsonschema>=2.6->nbformat>=5.1->nbconvert->jupyter>=1.0.0->drawdata) (0.10.6)
+Requirement already satisfied: anyio<4,>=3.1.0 in /usr/local/lib/python3.10/dist-packages (from jupyter-server>=1.8->nbclassic>=0.4.7->notebook->jupyter>=1.0.0->drawdata) (3.7.1)
+Requirement already satisfied: websocket-client in /usr/local/lib/python3.10/dist-packages (from jupyter-server>=1.8->nbclassic>=0.4.7->notebook->jupyter>=1.0.0->drawdata) (1.6.4)
+Requirement already satisfied: cffi>=1.0.1 in /usr/local/lib/python3.10/dist-packages (from argon2-cffi-bindings->argon2-cffi->notebook->jupyter>=1.0.0->drawdata) (1.16.0)
+Requirement already satisfied: idna>=2.8 in /usr/local/lib/python3.10/dist-packages (from anyio<4,>=3.1.0->jupyter-server>=1.8->nbclassic>=0.4.7->notebook->jupyter>=1.0.0->drawdata) (3.4)
+Requirement already satisfied: sniffio>=1.1 in /usr/local/lib/python3.10/dist-packages (from anyio<4,>=3.1.0->jupyter-server>=1.8->nbclassic>=0.4.7->notebook->jupyter>=1.0.0->drawdata) (1.3.0)
+Requirement already satisfied: exceptiongroup in /usr/local/lib/python3.10/dist-packages (from anyio<4,>=3.1.0->jupyter-server>=1.8->nbclassic>=0.4.7->notebook->jupyter>=1.0.0->drawdata) (1.1.3)
+Requirement already satisfied: pycparser in /usr/local/lib/python3.10/dist-packages (from cffi>=1.0.1->argon2-cffi-bindings->argon2-cffi->notebook->jupyter>=1.0.0->drawdata) (2.21)
+
+from drawdata import draw_scatter, draw_histogram, draw_line
+     
+borrame.png
+
+
+draw_histogram()
+     
+
+df1 = pd.read_csv("/data.csv")
+     
+
+df1
+     
+x	y	z
+0	0.000	0.104	a
+1	0.025	0.190	a
+2	0.050	0.326	a
+3	0.075	0.678	a
+4	0.100	0.736	a
+...	...	...	...
+115	0.875	0.008	c
+116	0.900	0.000	c
+117	0.925	0.000	c
+118	0.950	0.000	c
+119	0.975	0.000	c
+120 rows × 3 columns
+
+
+plt.scatter(df1["x"],df1["y"])
+     
+<matplotlib.collections.PathCollection at 0x7a7fe87a7a30>
+
+
+df1["x"].mean()
+
+     
+0.4875
+
+df1["x"].median()
+     
+0.4875
+
+df1["x"].std()
+     
+0.28979491444291217
+
+df1.describe()
+     
+x	y
+count	120.000000	120.000000
+mean	0.487500	0.195733
+std	0.289795	0.232130
+min	0.000000	-0.006000
+25%	0.243750	0.000000
+50%	0.487500	0.109000
+75%	0.731250	0.327000
+max	0.975000	0.946000
+
+draw_histogram()
+     
+
+df2 = pd.read_csv("/data (3).csv")
+     
+
+df2
+     
+x	y	z
+0	0.000	0.148	a
+1	0.025	0.372	a
+2	0.050	0.664	a
+3	0.075	0.918	a
+4	0.100	0.940	a
+...	...	...	...
+115	0.875	0.046	c
+116	0.900	0.032	c
+117	0.925	0.020	c
+118	0.950	0.008	c
+119	0.975	0.002	c
+120 rows × 3 columns
+
+
+plt.scatter(df2["x"],df2["y"])
+     
+<matplotlib.collections.PathCollection at 0x7a7fe83bdf90>
+
+
+df2["x"].mean()
+     
+0.4875
+
+df2["x"].median()
+     
+0.4875
+
+df2["x"].std()
+     
+0.28979491444291217
+
+df2.describe()
+     
+x	y
+count	120.000000	120.000000
+mean	0.487500	0.189850
+std	0.289795	0.232848
+min	0.000000	0.000000
+25%	0.243750	0.000000
+50%	0.487500	0.108000
+75%	0.731250	0.297500
+max	0.975000	0.940000
+
+df1.info()
+     
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 120 entries, 0 to 119
+Data columns (total 3 columns):
+ #   Column  Non-Null Count  Dtype  
+---  ------  --------------  -----  
+ 0   x       120 non-null    float64
+ 1   y       120 non-null    float64
+ 2   z       120 non-null    object 
+dtypes: float64(2), object(1)
+memory usage: 2.9+ KB
+
+df2.info()
+     
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 120 entries, 0 to 119
+Data columns (total 3 columns):
+ #   Column  Non-Null Count  Dtype  
+---  ------  --------------  -----  
+ 0   x       120 non-null    float64
+ 1   y       120 non-null    float64
+ 2   z       120 non-null    object 
+dtypes: float64(2), object(1)
+memory usage: 2.9+ KB
